@@ -4,6 +4,7 @@ import random
 import socket
 import socks
 import random
+from urllib.parse import urlparse
 #files
 usernames = "usernames.txt"
 passwords = "passwords.txt"
@@ -66,12 +67,25 @@ if ic1 == "3":
     ic2 = input("Paste the FULL URL of the login post request.\n")
     ic3 = input("Paste the id of the Username/Email box.")
     ic4 = input("Paste the id of the password box.")
+    purl = urlparse(ic2)
+    pdomain = purl.hostname
+
     while True:
         proxyserver = random.choice(proxlines)
         proxies = {'https':"http://" + proxyserver}
         username = random.choice(uflines)
         password = random.choice(pflines)
         useragent = random.choice(uaflines)
-        headers = {'User-Agent': useragent.strip("\n")}
+        headers = {'User-Agent': useragent.strip("\n"),
+        "Host": pdomain,
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": "61",
+        "Origin": "placeholder",
+        "DNT": "0",
+        "Connection": "keep-alive",
+        "Referer": ic2
+        }
         sendoff = requests.post(ic2, data={ic3: username, ic4: password}, headers=headers, proxies=proxies)
         print(sendoff)
