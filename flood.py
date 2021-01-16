@@ -87,5 +87,8 @@ if ic1 == "3":
         "Connection": "keep-alive",
         "Referer": ic2
         }
-        sendoff = requests.post(ic2, data={ic3: username, ic4: password}, headers=headers, proxies=proxies)
-        print(sendoff)
+        try:
+            sendoff = requests.post(ic2, data={ic3: username, ic4: password}, headers=headers, proxies=proxies)
+            print(sendoff)
+        except:
+            print("Failed to send request. Check internet connection and proxies.")
